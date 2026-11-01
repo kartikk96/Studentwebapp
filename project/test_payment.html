@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Portal Test</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #312e81, #4f46e5);
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+    button {
+      background: #4f46e5; color: white; border: none;
+      padding: 10px 20px; border-radius: 8px; cursor: pointer;
+      margin: 5px;
+      transition: background 0.3s;
+    }
+    button:hover { background: #4338ca; }
+    input, textarea {
+      width: 100%; padding: 10px; margin: 8px 0;
+      border-radius: 6px; border: none;
+      color: #333; 
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>🔍 Payment Portal Test</h2>
+  <p><strong>Branch Allocated:</strong> Computer Science</p>
+  
+  <div id="payment-template">
+    <h3><i class="fas fa-credit-card"></i> Fee Payment Portal</h3>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin: 15px 0;">
+      <h4>Payment Details</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0;">
+        <div><strong>Admission Fee:</strong> ₹2,50,000</div>
+        <div><strong>Processing Fee:</strong> ₹5,000</div>
+        <div><strong>Security Deposit:</strong> ₹25,000</div>
+        <div><strong>Total Amount:</strong> <span style="color: #4f46e5; font-size: 1.2em;">₹2,80,000</span></div>
+      </div>
+      <p style="color: #fbbf24; font-size: 0.9em;"><i class="fas fa-exclamation-triangle"></i> Payment must be completed within 7 days of acceptance</p>
+    </div>
+    
+    <h4>Payment Options</h4>
+    <div style="margin: 15px 0;">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+        <button onclick="selectPaymentMode('online')" id="btn-online" style="background: #059669; flex: 1; min-width: 120px;">Online Payment</button>
+        <button onclick="selectPaymentMode('bank')" id="btn-bank" style="background: #7c3aed; flex: 1; min-width: 120px;">Bank Transfer</button>
+        <button onclick="selectPaymentMode('dd')" id="btn-dd" style="background: #dc2626; flex: 1; min-width: 120px;">Demand Draft</button>
+      </div>
+    </div>
+    
+    <div id="payment-details" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin: 10px 0;">
+      <p style="text-align: center; color: #cbd5e1;">👆 Click on any payment option above to see details</p>
+    </div>
+    
+    <h4>Upload Payment Proof</h4>
+    <div style="margin: 15px 0;">
+      <input type="file" id="receipt-upload" accept=".pdf,.jpg,.jpeg,.png" style="margin-bottom: 10px;"> 
+      <p style="font-size: 0.85em; color: #cbd5e1;">Accepted formats: PDF, JPG, PNG (Max 5MB)</p>
+      <textarea id="payment-remarks" placeholder="Additional remarks or transaction details..." style="width: 100%; height: 60px; margin: 10px 0; padding: 8px; border-radius: 4px; border: 1px solid #374151; background: rgba(255,255,255,0.1); color: white;"></textarea>
+      <button onclick="testSubmitReceipt()" style="width: 100%; background: #059669; padding: 12px;">Submit Payment Proof</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>📋 Instructions to Test in Main Portal</h3>
+  <ol>
+    <li><strong>Register as Student:</strong> Create a new student account</li>
+    <li><strong>Submit Application:</strong> Fill out marks and submit</li>
+    <li><strong>Login as Admin:</strong> Use admin@portal.com / admin</li>
+    <li><strong>Allocate Branch:</strong> Click allocate button for the student</li>
+    <li><strong>Back to Student:</strong> Login as student and accept allocation</li>
+    <li><strong>Payment Portal:</strong> Should now show the payment interface</li>
+  </ol>
+</div>
+
+<script>
+function selectPaymentMode(mode) {
+    // Reset all buttons
+    document.querySelectorAll('#payment-template button').forEach(btn => {
+        if (btn.id.startsWith('btn-')) {
+            btn.style.opacity = '0.7';
+        }
+    });
+    
+    // Highlight selected button
+    document.getElementById(`btn-${mode}`).style.opacity = '1';
+    
+    const detailsDiv = document.getElementById('payment-details');
+    
+    if (mode === 'online') {
+        detailsDiv.innerHTML = `
+            <h5><i class="fas fa-laptop"></i> Online Payment</h5>
+            <p><strong>UPI ID:</strong> college@payments.upi</p>
+            <p><strong>QR Code:</strong> <span style="background: white; color: #333; padding: 5px; border-radius: 3px;">Scan with any UPI app</span></p>
+            <p><strong>Net Banking:</strong> Available for all major banks</p>
+            <p><strong>Cards:</strong> Visa, MasterCard, RuPay accepted</p>
+            <p style="color: #10b981;"><i class="fas fa-shield-alt"></i> Secured by 256-bit SSL encryption</p>
+        `;
+    } else if (mode === 'bank') {
+        detailsDiv.innerHTML = `
+            <h5><i class="fas fa-university"></i> Bank Transfer (NEFT/RTGS)</h5>
+            <p><strong>Account Name:</strong> College Admission Fund</p>
+            <p><strong>Account Number:</strong> 12345678901234</p>
+            <p><strong>IFSC Code:</strong> ABCD0001234</p>
+            <p><strong>Bank:</strong> State Bank of Education</p>
+            <p><strong>Branch:</strong> Main Campus Branch</p>
+            <p style="color: #f59e0b;"><i class="fas fa-info-circle"></i> Please mention your application number in the transfer remarks</p>
+        `;
+    } else if (mode === 'dd') {
+        detailsDiv.innerHTML = `
+            <h5><i class="fas fa-money-check"></i> Demand Draft</h5>
+            <p><strong>In Favor of:</strong> College Admission Fund</p>
+            <p><strong>Payable at:</strong> Mumbai</p>
+            <p><strong>Amount:</strong> ₹2,80,000 (Two Lakh Eighty Thousand Only)</p>
+            <p><strong>Send To:</strong><br>Admissions Office<br>XYZ Engineering College<br>123 College Road, Mumbai - 400001</p>
+            <p style="color: #ef4444;"><i class="fas fa-clock"></i> DD processing may take 2-3 additional business days</p>
+        `;
+    }
+}
+
+function testSubmitReceipt() {
+    const fileInput = document.getElementById('receipt-upload');
+    const remarks = document.getElementById('payment-remarks').value;
+    
+    if (fileInput.files.length === 0) {
+        alert("Please select a file to upload as the payment receipt.");
+        return;
+    }
+    
+    alert("✅ Payment proof submitted successfully!\n\nFile: " + fileInput.files[0].name + "\nRemarks: " + (remarks || 'None') + "\n\nThis is a test - in the main portal, this would be processed by admin.");
+}
+
+// Auto-select online payment for demonstration
+window.onload = () => selectPaymentMode('online');
+</script>
+
+</body>
+</html>
