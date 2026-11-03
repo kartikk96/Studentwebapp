@@ -41,7 +41,7 @@ Bootstrap| Responsive UI
 JavaScript| Frontend Interactivity
 Python| Backend Programming
 Django| Web Framework
-MySQL| Database Management
+SQLITE| Database Management
 Django Authentication| User Authentication
 
 🔄 Working Process
